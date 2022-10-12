@@ -41,7 +41,11 @@ def get_list(arg:str) -> list:
     """
     Combines _get_data and _all_packages
     """
-    link = f"https://rdb.altlinux.org/api/export/branch_binary_packages/{arg}"
+    #support for custom links
+    if "hhtps" not in arg:
+        link = f"https://rdb.altlinux.org/api/export/branch_binary_packages/{arg}"
+    else:
+        link = arg
     return _arch_divide ( _get_data(link) ) 
 
 def substraction(arg:list, realtime = True) -> list:
@@ -68,7 +72,7 @@ def check_versions(arg:list) -> dict:
     ret = {}
     data1 = _arch_divide (get_list(arg[0]))
     data2 = _arch_divide (get_list(arg[1]))
-    for _ in range(0, len(data2)):
+    for _ in range(0, len(data1)):
         if _fromstring (data1[_]["version"]) > _fromstring (data2[_]["version"]):
             ret.update(data1[_])
     return ret

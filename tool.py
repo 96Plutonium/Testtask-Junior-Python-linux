@@ -11,10 +11,11 @@ def main():
         print (f"{sys.argv[0]} <branch> <branch1> --first --second --versions")
         sys.exit(0)
     # default arguments 
-    if "https" not in str (sys.argv):
+    if "--" in str (sys.argv[1:2]):
         # list added for future functionality to compare not only 2 branches 
         branches = ["p10", "sisyphus"]
     else:
+        #custom links
         branches = sys.argv[1:2]
     dataset = ""
     if "--first" in sys.argv:
