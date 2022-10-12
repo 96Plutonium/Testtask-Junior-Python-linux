@@ -1,4 +1,5 @@
 import requests
+import string 
 
 def _get_data(link:str) -> dict:
     return requests.get(link).json()["packages"]
@@ -20,6 +21,19 @@ def _arch_divide(arg:dict) -> list:
             'version' : _["version"]
         })
     return ret
+
+"""
+creates an integer from version string
+example
+0.1.123 -> 1123
+"""
+def _fromstring(arg:str) -> int:
+    blacklist = ["0", ".", "'", "_"] + [_ for _ in string.ascii_letters]
+    for _ in blacklist:
+        arg = arg.replace(_, '')
+    if arg == '':
+        return 0
+    return int (arg)
 """
 Combines _get_data and _all_packages 
 """
@@ -43,5 +57,9 @@ def substraction(b1:str, b2:str, realtime = True) -> list:
 
 def check_versions(b1:str, b2:str) -> dict:
     ret = {}
-    data1 = _get_data(b1)
-    data2 = _get_data(b2)
+    data1 = _arch_divide (get_list(b1))
+    data2 = _arch_divide (get_list(b2))
+    for _ in range(0, len(data2)):
+        if _fromstring (data1[_]["version"]) > _fromstring (data2[_]["version"]):
+            ret.update(data1[_])
+    return ret

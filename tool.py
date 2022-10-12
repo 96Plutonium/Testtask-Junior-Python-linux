@@ -19,5 +19,7 @@ def main():
         dataset = substraction(branch2, branch1)
     if dataset:
         pprint.pprint(dataset, width = 50, compact = True)
+    if "--versions":
+        pprint.pprint(check_versions(branch1, branch2), width = 50, compact = True)
 if __name__ == "__main__":
     main()
