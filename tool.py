@@ -14,10 +14,10 @@ def main():
         branch2 = sys.argv[2]
     dataset = ""
     if "--first" in sys.argv:
-        dataset = set ( get_list(branch1) ) - set ( get_list(branch2 ) )
-    elif "second" in sys.argv:
-        dataset = set ( get_list(branch1) ) - set ( get_list(branch2 ) )
+        dataset = substraction(branch1, branch2)
+    elif "--second" in sys.argv:
+        dataset = substraction(branch2, branch1)
     if dataset:
-        pprint.pprint(dataset, width = 20, compact = True)
+        pprint.pprint(dataset, width = 50, compact = True)
 if __name__ == "__main__":
     main()
