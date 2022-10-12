@@ -48,21 +48,21 @@ def get_list(arg:str) -> list:
         link = arg
     return _arch_divide ( _get_data(link) ) 
 
-def substraction(arg:list, realtime = True) -> list:
-    """
-    Analogue to python's set substraction
-    proceeding might take a bit long, so its made realtime by default
-    NB that it analyses verions too
-    """
+def toset(arg:str) -> set:
+    return set ([frozenset(_.values()) for _ in get_list(arg)] )
+
+def fromset(arg:list):
     ret = []
-    data = get_list(arg[1])
-    for _ in get_list(arg[0]):
-        if _ not in data:
-            if realtime:
-                print(_)
-            else:
-                ret.append(_)
+    for _ in arg:
+        ret.append({
+            'arch' : _[2],
+            'name' : _[1],
+            'version' : _[0]
+        })
     return ret
+
+def substraction(arg:list, realtime = True):
+    return toset(arg[1]) - toset(arg[0]) 
 
 def check_versions(arg:list) -> dict:
     """
@@ -70,9 +70,16 @@ def check_versions(arg:list) -> dict:
     Checked: it works
     """
     ret = {}
-    data1 = _arch_divide (get_list(arg[0]))
-    data2 = _arch_divide (get_list(arg[1]))
+    data1 = get_list(arg[0])
+    data2 = get_list(arg[1])
     for _ in range(0, len(data1)):
         if _fromstring (data1[_]["version"]) > _fromstring (data2[_]["version"]):
             ret.update(data1[_])
     return ret
+
+
+class TestClass:
+    def test_one(self):
+        test1 = {"name": 123}
+        test2 = {"name": 123}
+        assert substraction([test1, test2], realtime = False) == {}

@@ -24,7 +24,7 @@ def main():
         dataset = substraction(branches[::-1])
     if dataset:
         toprint(dataset)
-    if "--versions":
+    if "--versions" in sys.argv:
         toprint(check_versions(branches))
 
 if __name__ == "__main__":
