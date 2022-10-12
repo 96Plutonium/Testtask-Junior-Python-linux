@@ -1,25 +1,30 @@
+#!/usr/bin/python3.7
 from lib import *
 import sys
 import pprint
 
+def toprint(arg:str):
+    pprint.pprint(arg, width = 50, compact = True)
+
 def main():
     if len(sys.argv) == 1:
         print (f"{sys.argv[0]} <branch> <branch1> --first --second --versions")
+        sys.exit(0)
     # default arguments 
     if "https" not in str (sys.argv):
-        branch1 = "sisyphus"
-        branch2 = "p10"
+        # list added for future functionality to compare not only 2 branches 
+        branches = ["p10", "sisyphus"]
     else:
-        branch1 = sys.argv[1]
-        branch2 = sys.argv[2]
+        branches = sys.argv[1:2]
     dataset = ""
     if "--first" in sys.argv:
-        dataset = substraction(branch1, branch2)
+        dataset = substraction(branches)
     elif "--second" in sys.argv:
-        dataset = substraction(branch2, branch1)
+        dataset = substraction(branches[::-1])
     if dataset:
-        pprint.pprint(dataset, width = 50, compact = True)
+        toprint(dataset)
     if "--versions":
-        pprint.pprint(check_versions(branch1, branch2), width = 50, compact = True)
+        toprint(check_versions(branches))
+
 if __name__ == "__main__":
     main()
